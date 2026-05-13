@@ -45,9 +45,9 @@ RecipeNest is a modern Android Recipe App built using Jetpack Compose in Android
 
 ---
 
-## Modern Home UI
+## Home Screen 2
 
-![Modern Home UI](screenshots/home2.png)
+![Home Screen 2](screenshots/home2.png)
 
 ---
 

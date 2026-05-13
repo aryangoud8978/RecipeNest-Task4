@@ -8,11 +8,26 @@ RecipeNest is a modern Android Recipe App built using Jetpack Compose in Android
 
 - Splash Screen
 - Modern UI Design
-- Search Bar
-- Recipe Cards
-- Clickable Recipes
-- Scrollable Layout
-- Clean User Interface
+- Bottom Navigation
+- Search Functionality
+- Featured Recipe Banner
+- Categories Section
+- Recipe Detail Screen
+- Favorite Toggle
+- Favorites Screen
+- Profile Screen
+- Dark Mode
+- Responsive Layout
+- Jetpack Compose UI
+
+---
+
+# 🛠️ Technologies Used
+
+- Kotlin
+- Jetpack Compose
+- Android Studio
+- Material 3
 
 ---
 
@@ -22,34 +37,67 @@ RecipeNest is a modern Android Recipe App built using Jetpack Compose in Android
 
 ![Splash Screen](screenshots/splash.png)
 
+---
+
 ## Home Screen
 
 ![Home Screen](screenshots/home.png)
 
-## Search Screen
+---
 
-![Search Screen](screenshots/search.png)
+## Modern Home UI
+
+![Modern Home UI](screenshots/home2.png)
 
 ---
 
-# 🛠️ Technologies Used
+## Search Functionality
 
-- Kotlin
-- Jetpack Compose
-- Android Studio
+![Search Functionality](screenshots/search.png)
+
+---
+
+## Recipe Detail Screen
+
+![Recipe Detail Screen](screenshots/description.png)
+
+---
+
+## Favorites Screen
+
+![Favorites Screen](screenshots/favourites.png)
+
+---
+
+## Profile Screen
+
+![Profile Screen](screenshots/profile.png)
+
+---
+
+## Dark Mode
+
+![Dark Mode](screenshots/darkmode.png)
 
 ---
 
 # 🚀 Future Enhancements
 
 - Firebase Authentication
-- API Integration
-- Favorites Feature
+- Real Recipe API Integration
 - Notifications
-- Dark Mode
+- Save User Preferences
+- Cloud Database
+- AI Recipe Recommendations
 
 ---
 
 # 👨‍💻 Developer
 
 Aryan Goud
+
+---
+
+# 📌 Internship Project
+
+This project was developed as part of the Android App Development Internship at ApexPlanet Software Pvt. Ltd.

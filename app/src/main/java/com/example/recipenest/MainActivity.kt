@@ -3,27 +3,25 @@ package com.example.recipenest
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.recipenest.components.ThemeManager
+import com.example.recipenest.screens.*
 
 class MainActivity : ComponentActivity() {
 
@@ -31,17 +29,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AppScreen()
+
+            val darkMode = ThemeManager.isDarkMode.value
+
+            MaterialTheme(
+
+                colorScheme =
+                    if (darkMode)
+                        darkColorScheme()
+                    else
+                        lightColorScheme()
+
+            ) {
+
+                AppScreen()
+            }
         }
     }
 }
-
-data class Recipe(
-    val emoji: String,
-    val name: String,
-    val time: String,
-    val rating: String
-)
 
 @Composable
 fun AppScreen() {
@@ -60,7 +65,129 @@ fun AppScreen() {
     if (showSplash) {
         SplashScreen()
     } else {
-        HomeScreen()
+        MainScreen()
+    }
+}
+
+@Composable
+fun MainScreen() {
+
+    var selectedItem by remember {
+        mutableIntStateOf(0)
+    }
+
+    var showDetailScreen by remember {
+        mutableStateOf(false)
+    }
+
+    if (showDetailScreen) {
+
+        Scaffold(
+
+            topBar = {
+
+                TopAppBar(
+
+                    title = {
+                        Text("Recipe Details")
+                    },
+
+                    navigationIcon = {
+
+                        IconButton(
+                            onClick = {
+                                showDetailScreen = false
+                            }
+                        ) {
+
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
+                    }
+                )
+            }
+
+        ) { paddingValues ->
+
+            Box(
+                modifier = Modifier.padding(paddingValues)
+            ) {
+
+                RecipeDetailScreen()
+            }
+        }
+
+    } else {
+
+        Scaffold(
+
+            bottomBar = {
+
+                NavigationBar {
+
+                    NavigationBarItem(
+                        selected = selectedItem == 0,
+                        onClick = {
+                            selectedItem = 0
+                        },
+                        icon = {
+                            Icon(Icons.Default.Home, contentDescription = "Home")
+                        },
+                        label = {
+                            Text("Home")
+                        }
+                    )
+
+                    NavigationBarItem(
+                        selected = selectedItem == 1,
+                        onClick = {
+                            selectedItem = 1
+                        },
+                        icon = {
+                            Icon(Icons.Default.Favorite, contentDescription = "Favorite")
+                        },
+                        label = {
+                            Text("Favorites")
+                        }
+                    )
+
+                    NavigationBarItem(
+                        selected = selectedItem == 2,
+                        onClick = {
+                            selectedItem = 2
+                        },
+                        icon = {
+                            Icon(Icons.Default.Person, contentDescription = "Profile")
+                        },
+                        label = {
+                            Text("Profile")
+                        }
+                    )
+                }
+            }
+
+        ) { paddingValues ->
+
+            Box(
+                modifier = Modifier.padding(paddingValues)
+            ) {
+
+                when (selectedItem) {
+
+                    0 -> HomeScreen(
+                        onRecipeClick = {
+                            showDetailScreen = true
+                        }
+                    )
+
+                    1 -> FavoriteScreen()
+
+                    2 -> ProfileScreen()
+                }
+            }
+        }
     }
 }
 
@@ -99,140 +226,6 @@ fun SplashScreen() {
                 fontSize = 18.sp,
                 color = Color.Gray
             )
-        }
-    }
-}
-
-@Composable
-fun HomeScreen() {
-
-    var searchText by remember {
-        mutableStateOf("")
-    }
-
-    val recipeList = listOf(
-
-        Recipe("🍕", "Cheese Pizza", "20 min", "4.8 ⭐"),
-        Recipe("🍔", "Chicken Burger", "15 min", "4.7 ⭐"),
-        Recipe("🍜", "Spicy Noodles", "18 min", "4.9 ⭐"),
-        Recipe("🥗", "Healthy Salad", "10 min", "4.5 ⭐")
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFFFF8F0))
-            .padding(20.dp)
-    ) {
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Text(
-            text = "RecipeNest",
-            fontSize = 34.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFFFF6B00)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Find Best Recipes For You 🍽️",
-            fontSize = 18.sp,
-            color = Color.Gray
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        OutlinedTextField(
-            value = searchText,
-            onValueChange = {
-                searchText = it
-            },
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = {
-                Text(text = "Search Recipes")
-            },
-            shape = RoundedCornerShape(16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        LazyColumn {
-
-            items(recipeList) { recipe ->
-
-                RecipeCard(recipe)
-
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-    }
-}
-
-@Composable
-fun RecipeCard(recipe: Recipe) {
-
-    val context = LocalContext.current
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(140.dp)
-            .clickable {
-
-                Toast.makeText(
-                    context,
-                    "${recipe.name} Clicked",
-                    Toast.LENGTH_SHORT
-                ).show()
-            },
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp
-        )
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Text(
-                text = recipe.emoji,
-                fontSize = 60.sp
-            )
-
-            Spacer(modifier = Modifier.width(20.dp))
-
-            Column {
-
-                Text(
-                    text = recipe.name,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "Cooking Time: ${recipe.time}",
-                    fontSize = 16.sp,
-                    color = Color.Gray
-                )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Text(
-                    text = "Rating: ${recipe.rating}",
-                    fontSize = 16.sp,
-                    color = Color(0xFFFF9800)
-                )
-            }
         }
     }
 }

@@ -1,5 +1,10 @@
 package com.example.recipenest.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
@@ -11,6 +16,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,16 +32,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.example.recipenest.api.RetrofitInstance
 import com.example.recipenest.components.CategoryChip
 import com.example.recipenest.components.FeaturedBanner
 import com.example.recipenest.components.OnlineRecipeCard
+import com.example.recipenest.components.RecentRecipeCard
 import com.example.recipenest.components.ShimmerRecipeCard
 import com.example.recipenest.components.ThemeManager
 import com.example.recipenest.model.OnlineRecipe
+import com.example.recipenest.model.RecentRecipe
+import com.example.recipenest.utils.NetworkUtils
+import com.example.recipenest.utils.NotificationHelper
+import com.example.recipenest.utils.RecentRecipeManager
 import kotlinx.coroutines.launch
 
 @OptIn(
@@ -88,6 +101,17 @@ fun HomeScreen(
 
             HomeContent(
                 onRecipeSelected = {
+
+                    RecentRecipeManager.addRecipe(
+
+                        RecentRecipe(
+                            id = it.id,
+                            name = it.name,
+                            imageUrl = it.imageUrl,
+                            category = it.category
+                        )
+                    )
+
                     selectedRecipe = it
                 }
             )
@@ -101,6 +125,11 @@ fun HomeContent(
     onRecipeSelected: (OnlineRecipe) -> Unit
 ) {
 
+    val context = LocalContext.current
+
+    val recentRecipes =
+        RecentRecipeManager.recentRecipes
+
     var searchText by remember {
         mutableStateOf("")
     }
@@ -111,6 +140,10 @@ fun HomeContent(
 
     var errorMessage by remember {
         mutableStateOf<String?>(null)
+    }
+
+    var isOffline by remember {
+        mutableStateOf(false)
     }
 
     val darkMode = ThemeManager.isDarkMode.value
@@ -141,12 +174,51 @@ fun HomeContent(
 
     val scope = rememberCoroutineScope()
 
+    val notificationPermissionLauncher =
+        rememberLauncherForActivityResult(
+            contract =
+                ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+
+            if (isGranted) {
+
+                NotificationHelper.showNotification(
+                    context
+                )
+
+            } else {
+
+                Toast.makeText(
+                    context,
+                    "Notification permission denied",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+    LaunchedEffect(Unit) {
+
+        NotificationHelper.createNotificationChannel(
+            context
+        )
+    }
+
     fun fetchRecipes() {
+
+        if (!NetworkUtils.isInternetAvailable(context)) {
+
+            isOffline = true
+            isLoading = false
+            isRefreshing = false
+
+            return
+        }
 
         scope.launch {
 
             try {
 
+                isOffline = false
                 errorMessage = null
 
                 if (!isRefreshing) {
@@ -170,7 +242,7 @@ fun HomeContent(
             } catch (e: Exception) {
 
                 errorMessage =
-                    "Failed to load recipes. Check internet connection."
+                    "Failed to load recipes"
 
                 e.printStackTrace()
 
@@ -231,266 +303,376 @@ fun HomeContent(
             .pullRefresh(pullRefreshState)
     ) {
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp),
+        if (isOffline) {
 
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
 
-            contentPadding = PaddingValues(
-                top = 20.dp,
-                bottom = 120.dp
-            )
-        ) {
+                verticalArrangement = Arrangement.Center,
 
-            item {
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-
-                    horizontalArrangement =
-                        Arrangement.SpaceBetween,
-
-                    verticalAlignment =
-                        Alignment.CenterVertically
-                ) {
-
-                    Column {
-
-                        Text(
-                            text = "Hello Aryan 👋",
-                            fontSize = 18.sp,
-                            color = subtitleColor
-                        )
-
-                        Spacer(
-                            modifier = Modifier.height(4.dp)
-                        )
-
-                        Text(
-                            text = "RecipeNest",
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFF6B00)
-                        )
-                    }
-
-                    Row {
-
-                        IconButton(
-                            onClick = {
-
-                                ThemeManager.isDarkMode.value =
-                                    !ThemeManager.isDarkMode.value
-                            }
-                        ) {
-
-                            Icon(
-                                imageVector =
-                                    Icons.Default.DarkMode,
-
-                                contentDescription =
-                                    "Dark Mode",
-
-                                tint = Color(0xFFFF6B00),
-
-                                modifier = Modifier.size(30.dp)
-                            )
-                        }
-
-                        IconButton(
-                            onClick = { }
-                        ) {
-
-                            Icon(
-                                imageVector =
-                                    Icons.Default.Notifications,
-
-                                contentDescription =
-                                    "Notifications",
-
-                                tint = Color(0xFFFF6B00),
-
-                                modifier = Modifier.size(30.dp)
-                            )
-                        }
-                    }
-                }
-            }
-
-            item {
-
-                OutlinedTextField(
-                    value = searchText,
-
-                    onValueChange = {
-                        searchText = it
-                    },
-
-                    modifier = Modifier.fillMaxWidth(),
-
-                    placeholder = {
-                        Text(text = "Search Recipes")
-                    },
-
-                    shape = RoundedCornerShape(16.dp)
-                )
-            }
-
-            item {
-
-                FeaturedBanner()
-            }
-
-            item {
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
                 Text(
-                    text = "Categories",
-
-                    fontSize = 22.sp,
-
-                    fontWeight = FontWeight.Bold,
-
-                    color = textColor
+                    text = "📡",
+                    fontSize = 80.sp
                 )
-            }
 
-            item {
-
-                Row(
-                    modifier = Modifier.horizontalScroll(
-                        rememberScrollState()
-                    )
-                ) {
-
-                    categoryList.forEach { category ->
-
-                        CategoryChip(
-                            text = category,
-
-                            isSelected =
-                                selectedCategory == category,
-
-                            onClick = {
-                                selectedCategory = category
-                            }
-                        )
-
-                        Spacer(
-                            modifier = Modifier.width(12.dp)
-                        )
-                    }
-                }
-            }
-
-            item {
+                Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = "Online Recipes",
-
-                    fontSize = 22.sp,
-
+                    text = "No Internet Connection",
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-
                     color = textColor
                 )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "Please check your internet and try again",
+                    color = subtitleColor
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = {
+                        fetchRecipes()
+                    }
+                ) {
+
+                    Text(text = "Retry")
+                }
             }
 
-            when {
+        } else {
 
-                isLoading -> {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp),
 
-                    items(5) {
+                verticalArrangement = Arrangement.spacedBy(16.dp),
 
-                        ShimmerRecipeCard()
-                    }
-                }
+                contentPadding = PaddingValues(
+                    top = 20.dp,
+                    bottom = 120.dp
+                )
+            ) {
 
-                errorMessage != null -> {
+                item {
 
-                    item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
 
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 50.dp),
+                        horizontalArrangement =
+                            Arrangement.SpaceBetween,
 
-                            horizontalAlignment =
-                                Alignment.CenterHorizontally
-                        ) {
+                        verticalAlignment =
+                            Alignment.CenterVertically
+                    ) {
+
+                        Column {
 
                             Text(
-                                text = "⚠️",
-                                fontSize = 50.sp
+                                text = "Hello Aryan 👋",
+                                fontSize = 18.sp,
+                                color = subtitleColor
                             )
 
                             Spacer(
-                                modifier = Modifier.height(16.dp)
+                                modifier = Modifier.height(4.dp)
                             )
 
                             Text(
-                                text = errorMessage!!,
-                                color = textColor
+                                text = "RecipeNest",
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFFF6B00)
                             )
+                        }
 
-                            Spacer(
-                                modifier = Modifier.height(20.dp)
-                            )
+                        Row {
 
-                            Button(
+                            IconButton(
                                 onClick = {
-                                    fetchRecipes()
+
+                                    ThemeManager.isDarkMode.value =
+                                        !ThemeManager.isDarkMode.value
                                 }
                             ) {
 
-                                Text(text = "Retry")
+                                Icon(
+                                    imageVector =
+                                        Icons.Default.DarkMode,
+
+                                    contentDescription =
+                                        "Dark Mode",
+
+                                    tint = Color(0xFFFF6B00),
+
+                                    modifier = Modifier.size(30.dp)
+                                )
+                            }
+
+                            IconButton(
+                                onClick = {
+
+                                    if (android.os.Build.VERSION.SDK_INT >=
+                                        android.os.Build.VERSION_CODES.TIRAMISU
+                                    ) {
+
+                                        when {
+
+                                            ContextCompat.checkSelfPermission(
+                                                context,
+                                                Manifest.permission.POST_NOTIFICATIONS
+                                            ) == PackageManager.PERMISSION_GRANTED -> {
+
+                                                NotificationHelper.showNotification(
+                                                    context
+                                                )
+                                            }
+
+                                            else -> {
+
+                                                notificationPermissionLauncher.launch(
+                                                    Manifest.permission.POST_NOTIFICATIONS
+                                                )
+                                            }
+                                        }
+
+                                    } else {
+
+                                        NotificationHelper.showNotification(
+                                            context
+                                        )
+                                    }
+                                }
+                            ) {
+
+                                Icon(
+                                    imageVector =
+                                        Icons.Default.Notifications,
+
+                                    contentDescription =
+                                        "Notifications",
+
+                                    tint = Color(0xFFFF6B00),
+
+                                    modifier = Modifier.size(30.dp)
+                                )
                             }
                         }
                     }
                 }
 
-                filteredRecipes.isEmpty() -> {
+                if (recentRecipes.isNotEmpty()) {
 
                     item {
 
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 50.dp),
+                        Text(
+                            text = "Recently Viewed",
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = textColor
+                        )
+                    }
 
-                            horizontalAlignment =
-                                Alignment.CenterHorizontally
+                    item {
+
+                        LazyRow(
+                            horizontalArrangement =
+                                Arrangement.spacedBy(16.dp)
                         ) {
 
-                            Text(
-                                text = "🍽️",
-                                fontSize = 50.sp
+                            items(recentRecipes) { recipe ->
+
+                                RecentRecipeCard(
+                                    recipe = recipe,
+                                    onClick = { }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+
+                    OutlinedTextField(
+                        value = searchText,
+
+                        onValueChange = {
+                            searchText = it
+                        },
+
+                        modifier = Modifier.fillMaxWidth(),
+
+                        placeholder = {
+                            Text(text = "Search Recipes")
+                        },
+
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                }
+
+                item {
+
+                    FeaturedBanner()
+                }
+
+                item {
+
+                    Text(
+                        text = "Categories",
+
+                        fontSize = 22.sp,
+
+                        fontWeight = FontWeight.Bold,
+
+                        color = textColor
+                    )
+                }
+
+                item {
+
+                    Row(
+                        modifier = Modifier.horizontalScroll(
+                            rememberScrollState()
+                        )
+                    ) {
+
+                        categoryList.forEach { category ->
+
+                            CategoryChip(
+                                text = category,
+
+                                isSelected =
+                                    selectedCategory == category,
+
+                                onClick = {
+                                    selectedCategory = category
+                                }
                             )
 
                             Spacer(
-                                modifier = Modifier.height(16.dp)
-                            )
-
-                            Text(
-                                text = "No recipes found",
-                                color = textColor
+                                modifier = Modifier.width(12.dp)
                             )
                         }
                     }
                 }
 
-                else -> {
+                item {
 
-                    items(filteredRecipes) { recipe ->
+                    Text(
+                        text = "Online Recipes",
 
-                        OnlineRecipeCard(
-                            recipe = recipe,
+                        fontSize = 22.sp,
 
-                            onClick = {
-                                onRecipeSelected(recipe)
+                        fontWeight = FontWeight.Bold,
+
+                        color = textColor
+                    )
+                }
+
+                when {
+
+                    isLoading -> {
+
+                        items(5) {
+
+                            ShimmerRecipeCard()
+                        }
+                    }
+
+                    errorMessage != null -> {
+
+                        item {
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 50.dp),
+
+                                horizontalAlignment =
+                                    Alignment.CenterHorizontally
+                            ) {
+
+                                Text(
+                                    text = "⚠️",
+                                    fontSize = 50.sp
+                                )
+
+                                Spacer(
+                                    modifier = Modifier.height(16.dp)
+                                )
+
+                                Text(
+                                    text = errorMessage!!,
+                                    color = textColor
+                                )
+
+                                Spacer(
+                                    modifier = Modifier.height(20.dp)
+                                )
+
+                                Button(
+                                    onClick = {
+                                        fetchRecipes()
+                                    }
+                                ) {
+
+                                    Text(text = "Retry")
+                                }
                             }
-                        )
+                        }
+                    }
+
+                    filteredRecipes.isEmpty() -> {
+
+                        item {
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 50.dp),
+
+                                horizontalAlignment =
+                                    Alignment.CenterHorizontally
+                            ) {
+
+                                Text(
+                                    text = "🍽️",
+                                    fontSize = 50.sp
+                                )
+
+                                Spacer(
+                                    modifier = Modifier.height(16.dp)
+                                )
+
+                                Text(
+                                    text = "No recipes found",
+                                    color = textColor
+                                )
+                            }
+                        }
+                    }
+
+                    else -> {
+
+                        items(filteredRecipes) { recipe ->
+
+                            OnlineRecipeCard(
+                                recipe = recipe,
+
+                                onClick = {
+                                    onRecipeSelected(recipe)
+                                }
+                            )
+                        }
                     }
                 }
             }

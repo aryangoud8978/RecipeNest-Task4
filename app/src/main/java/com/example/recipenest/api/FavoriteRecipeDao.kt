@@ -14,16 +14,18 @@ interface FavoriteRecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(
         recipe: FavoriteRecipeEntity
-    )
+    ): Unit
 
     @Delete
     suspend fun deleteRecipe(
         recipe: FavoriteRecipeEntity
-    )
+    ): Unit
 
     @Query("SELECT * FROM favorite_recipes")
     fun getAllFavorites(): Flow<List<FavoriteRecipeEntity>>
 
     @Query("SELECT EXISTS(SELECT 1 FROM favorite_recipes WHERE id = :recipeId)")
-    fun isFavorite(recipeId: String): Flow<Boolean>
+    fun isFavorite(
+        recipeId: String
+    ): Flow<Boolean>
 }

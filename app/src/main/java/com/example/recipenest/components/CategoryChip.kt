@@ -1,38 +1,54 @@
 package com.example.recipenest.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
-fun CategoryChip(category: String) {
+fun CategoryChip(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
 
-    Box(
-        modifier = Modifier
-            .background(
-                Color(0xFFFF6B00),
-                shape = RoundedCornerShape(20.dp)
-            )
-            .padding(
-                horizontal = 20.dp,
-                vertical = 12.dp
-            ),
-        contentAlignment = Alignment.Center
+    val backgroundColor =
+        if (isSelected)
+            Color(0xFFFF6B00)
+        else
+            MaterialTheme.colorScheme.surfaceVariant
+
+    val textColor =
+        if (isSelected)
+            Color.White
+        else
+            MaterialTheme.colorScheme.onSurfaceVariant
+
+    Surface(
+        modifier = Modifier.clickable {
+            onClick()
+        },
+        shape = RoundedCornerShape(50.dp),
+        color = backgroundColor,
+        tonalElevation = 4.dp
     ) {
 
         Text(
-            text = category,
-            color = Color.White,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            text = text,
+            modifier = Modifier.padding(
+                horizontal = 18.dp,
+                vertical = 10.dp
+            ),
+            color = textColor,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

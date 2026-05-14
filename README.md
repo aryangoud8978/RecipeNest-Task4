@@ -1,103 +1,171 @@
-# 🍔 RecipeNest
+# 🍽️ RecipeNest – Modern Android Recipe App
 
-RecipeNest is a modern Android Recipe App built using Jetpack Compose in Android Studio.
+RecipeNest is a modern Android Recipe Application built using **Kotlin** and **Jetpack Compose** in Android Studio as part of the **ApexPlanet Android App Development Internship – Task 3**.
+
+The app provides a beautiful and smooth user experience with real-time recipe data, modern UI design, API integration, category filtering, persistent favorites, dark mode support, and professional animations.
 
 ---
 
 # ✨ Features
 
+## 🚀 Core Features
+
 - Splash Screen
-- Modern UI Design
+- Modern Jetpack Compose UI
 - Bottom Navigation
+- Real-Time Recipe API Integration
+- Internet Recipe Images
 - Search Functionality
-- Featured Recipe Banner
-- Categories Section
 - Recipe Detail Screen
-- Favorite Toggle
 - Favorites Screen
 - Profile Screen
-- Dark Mode
+- Dark Mode Support
 - Responsive Layout
-- Jetpack Compose UI
+
+---
+
+## 🌐 API & Backend Features
+
+- Retrofit API Integration
+- JSON Parsing using Gson
+- Real Recipe Fetching
+- Dynamic Recipe Loading
+- Pull-to-Refresh Support
+- Error Handling UI
+- Empty State UI
+- Smooth Data Updates
+
+---
+
+## 🎨 UI/UX Features
+
+- Featured Recipe Banner
+- Category Filtering
+- Shimmer Loading Animation
+- Smooth Screen Transitions
+- Modern Material 3 Design
+- Interactive Favorite Button
+- Beautiful Card Layouts
+- Professional Typography & Spacing
+
+---
+
+## ❤️ Advanced Features
+
+- Persistent Favorites using Room Database
+- Offline Favorite Storage
+- Real-Time Favorite Updates
+- Animated Navigation Transitions
+- Search + Category Combined Filtering
 
 ---
 
 # 🛠️ Technologies Used
 
-- Kotlin
-- Jetpack Compose
-- Android Studio
-- Material 3
+| Technology | Purpose |
+|------------|---------|
+| Kotlin | Programming Language |
+| Jetpack Compose | Modern Android UI |
+| Retrofit | API Integration |
+| Gson Converter | JSON Parsing |
+| Coil | Image Loading |
+| Room Database | Local Storage |
+| Material 3 | UI Components |
+| Coroutines | Asynchronous Programming |
+
+---
+
+# 🌐 API Used
+
+### TheMealDB API
+
+https://www.themealdb.com/api.php
+
+Used for:
+- Fetching recipes
+- Recipe images
+- Recipe categories
+- Recipe instructions
 
 ---
 
 # 📱 App Screenshots
 
-## Splash Screen
-
-![Splash Screen](screenshots/splash.png)
-
 ---
 
-## Home Screen
+## 🏠 Home Screen
 
 ![Home Screen](screenshots/home.png)
 
 ---
 
-## Home Screen 2
+## 🍱 Online Recipes
 
-![Home Screen 2](screenshots/home2.png)
+![Online Recipes](screenshots/onlinerecipes.png)
 
 ---
 
-## Search Functionality
+## 🧩 Category Filtering
+
+![Category Filtering](screenshots/categories.png)
+
+---
+
+## 🔍 Search Functionality
 
 ![Search Functionality](screenshots/search.png)
 
 ---
 
-## Recipe Detail Screen
+## 📖 Recipe Detail Screen
 
-![Recipe Detail Screen](screenshots/description.png)
-
----
-
-## Favorites Screen
-
-![Favorites Screen](screenshots/favourites.png)
+![Recipe Detail Screen](screenshots/description2.png)
 
 ---
 
-## Profile Screen
+## ❤️ Favorites Screen
 
-![Profile Screen](screenshots/profile.png)
+![Favorites Screen](screenshots/favourites2.png)
 
 ---
 
-## Dark Mode
+## 🌙 Dark Mode
 
 ![Dark Mode](screenshots/darkmode.png)
 
 ---
 
-# 🚀 Future Enhancements
+## ⚠️ Empty State UI
 
-- Firebase Authentication
-- Real Recipe API Integration
-- Notifications
-- Save User Preferences
-- Cloud Database
-- AI Recipe Recommendations
+![Empty State](screenshots/wrongfood.png)
 
 ---
 
-# 👨‍💻 Developer
+# 📂 Project Structure
 
-Aryan Goud
-
----
-
-# 📌 Internship Project
-
-This project was developed as part of the Android App Development Internship at ApexPlanet Software Pvt. Ltd.
+```text
+com.example.recipenest
+│
+├── api
+│   ├── RecipeApiService.kt
+│   ├── FavoriteRecipeDao.kt
+│   └── RecipeDatabase.kt
+│
+├── components
+│   ├── CategoryChip.kt
+│   ├── FeaturedBanner.kt
+│   ├── OnlineRecipeCard.kt
+│   ├── ShimmerRecipeCard.kt
+│   └── ThemeManager.kt
+│
+├── model
+│   ├── OnlineRecipe.kt
+│   └── FavoriteRecipeEntity.kt
+│
+├── screens
+│   ├── HomeScreen.kt
+│   ├── FavoriteScreen.kt
+│   ├── ProfileScreen.kt
+│   └── OnlineRecipeDetailScreen.kt
+│
+└── navigation

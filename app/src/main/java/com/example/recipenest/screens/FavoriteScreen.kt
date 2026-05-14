@@ -4,106 +4,108 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-data class FavoriteRecipe(
-    val emoji: String,
-    val name: String
-)
+import com.example.recipenest.api.RecipeDatabase
+import com.example.recipenest.components.OnlineRecipeCard
+import com.example.recipenest.components.ThemeManager
+import com.example.recipenest.model.OnlineRecipe
 
 @Composable
 fun FavoriteScreen() {
 
-    val favoriteRecipes = listOf(
+    val darkMode = ThemeManager.isDarkMode.value
 
-        FavoriteRecipe("🍕", "Cheese Pizza"),
-        FavoriteRecipe("🍔", "Chicken Burger"),
-        FavoriteRecipe("🍜", "Spicy Noodles")
-    )
+    val backgroundColor =
+        if (darkMode)
+            Color(0xFF121212)
+        else
+            Color(0xFFFFF8F0)
+
+    val textColor =
+        if (darkMode)
+            Color.White
+        else
+            Color.Black
+
+    val context = LocalContext.current
+
+    val database =
+        RecipeDatabase.getDatabase(context)
+
+    val dao = database.favoriteRecipeDao()
+
+    val favoriteRecipes by dao
+        .getAllFavorites()
+        .collectAsState(initial = emptyList())
+
+    val convertedRecipes = favoriteRecipes.map {
+
+        OnlineRecipe(
+            id = it.id,
+            name = it.name,
+            imageUrl = it.imageUrl,
+            category = it.category,
+            instructions = it.instructions
+        )
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFF8F0))
+            .background(backgroundColor)
             .padding(20.dp)
     ) {
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = "Favorite Recipes ❤️",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFFFF6B00)
+            color = textColor
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        LazyColumn {
+        if (convertedRecipes.isEmpty()) {
 
-            items(favoriteRecipes) { recipe ->
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
 
-                FavoriteRecipeCard(recipe)
-
-                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "No favorite recipes yet 🍽️",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = textColor.copy(alpha = 0.7f)
+                )
             }
-        }
-    }
-}
 
-@Composable
-fun FavoriteRecipeCard(recipe: FavoriteRecipe) {
+        } else {
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp
-        )
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Text(
-                text = recipe.emoji,
-                fontSize = 60.sp
-            )
-
-            Spacer(modifier = Modifier.width(20.dp))
-
-            Column {
-
-                Text(
-                    text = recipe.name,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(
+                    bottom = 100.dp
                 )
+            ) {
 
-                Spacer(modifier = Modifier.height(8.dp))
+                items(convertedRecipes) { recipe ->
 
-                Text(
-                    text = "Saved to Favorites",
-                    fontSize = 16.sp,
-                    color = Color.Gray
-                )
+                    OnlineRecipeCard(
+                        recipe = recipe,
+                        onClick = { }
+                    )
+                }
             }
         }
     }

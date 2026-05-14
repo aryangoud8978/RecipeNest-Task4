@@ -1,8 +1,8 @@
-### 🍽️ RecipeNest – Modern Android Recipe App
+# 🍽️ RecipeNest – Modern Android Recipe App
 
 RecipeNest is a professional Android Recipe Application built using Kotlin and Jetpack Compose in Android Studio as part of the ApexPlanet Android App Development Internship.
 
-The app provides a beautiful modern UI, real-time recipe fetching, Firebase Authentication, Room Database persistence, offline handling, notifications, DataStore preferences, and production-level Android architecture.
+The app provides a modern user experience with real-time recipe fetching, Firebase Authentication, Room Database persistence, offline handling, notifications, DataStore preferences, and production-level Android architecture.
 
 ---
 
@@ -141,6 +141,42 @@ Used for:
 ---
 
 # 📱 App Screenshots
+
+## 🏠 Home Screen
+
+![Home Screen](screenshots/home.png)
+
+---
+
+## 🔍 Search Functionality
+
+![Search Screen](screenshots/search.png)
+
+---
+
+## 🧩 Category Filtering
+
+![Category Filtering](screenshots/categories.png)
+
+---
+
+## 📖 Recipe Detail Screen
+
+![Recipe Detail](screenshots/recipe_detail.png)
+
+---
+
+## ❤️ Favorites Screen
+
+![Favorites Screen](screenshots/favorites.png)
+
+---
+
+## 🌙 Dark Mode
+
+![Dark Mode](screenshots/dark_mode.png)
+
+---
 
 ## 🔐 Login Screen
 

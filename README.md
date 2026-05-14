@@ -1,134 +1,244 @@
-🍽️ RecipeNest – Modern Android Recipe App
+# 🍽️ RecipeNest – Modern Android Recipe App
 
-RecipeNest is a modern Android Recipe Application built using Kotlin and Jetpack Compose in Android Studio as part of the ApexPlanet Android App Development Internship – Task 3.
+RecipeNest is a modern Android Recipe Application built using Kotlin and Jetpack Compose in Android Studio as part of the ApexPlanet Android App Development Internship – Task 4.
 
-The app delivers a smooth and modern cooking experience with:
+The app provides a beautiful and smooth user experience with real-time recipe data, modern UI design, API integration, category filtering, persistent favorites, Firebase authentication, offline handling, settings management, notifications, dark mode support, and professional animations.
 
-🌐 Real-time recipe API integration
-❤️ Persistent favorites storage
-🌙 Dark mode support
-🔍 Smart recipe search
-🎨 Beautiful Material 3 UI
-📱 Responsive Compose layouts
-⚡ Smooth animations & transitions
-✨ Features
-🚀 Core Features
-Splash Screen
-Login & Signup UI
-Bottom Navigation
-Home Dashboard
-Search Recipes
-Recipe Detail Screen
-Favorites Management
-Profile Section
-Settings Screen
-Dark Mode Toggle
-Recently Viewed Recipes
-Offline Detection Screen
-🌐 API & Data Features
-Retrofit API Integration
-Real-Time Recipe Fetching
-Dynamic Recipe Loading
-Internet Recipe Images
-Error Handling UI
-Empty State Handling
-Search + Category Filtering
-Pull-to-Refresh Support
-🎨 UI/UX Features
-Modern Material 3 Design
-Featured Recipe Banner
-Interactive Category Chips
-Beautiful Recipe Cards
-Smooth Navigation
-Shimmer Loading Animation
-Professional Typography
-Responsive Layout Design
-❤️ Advanced Features
-Persistent Favorites
-Local Storage Support
-Dark Mode Persistence
-Animated UI Components
-Real-Time Favorite Updates
-🛠️ Technologies Used
-Technology	Purpose
-Kotlin	Programming Language
-Jetpack Compose	Modern Android UI
-Retrofit	API Integration
-Gson Converter	JSON Parsing
-Coil	Image Loading
-Room Database	Local Storage
-Material 3	UI Components
-Coroutines	Async Operations
-🌐 API Used
-TheMealDB API
+# ✨ Features
 
-Used for:
+## 🚀 Core Features
 
-Recipe Fetching
-Recipe Categories
-Recipe Images
-Recipe Instructions
-Search Functionality
-📱 App Screenshots
-🚀 Splash Screen
-![Splash](screenshots/splash.png)
-🔐 Login Screen
-![Login](screenshots/login.png)
-📝 Signup Screen
-![Signup](screenshots/signup.png)
-🏠 Home Screen
-![Home](screenshots/home.png)
-![Home2](screenshots/home2.png)
-🌙 Dark Mode
-![DarkMode](screenshots/darkmode.png)
-🍱 Online Recipes
-![OnlineRecipes](screenshots/onlinerecipes.png)
-🧩 Category Filtering
-![Categories](screenshots/categories.png)
-🔍 Search Functionality
-![Search](screenshots/search.png)
-📖 Recipe Detail Screen
-![Description](screenshots/description.png)
-![Description2](screenshots/description2.png)
-❤️ Favorites Screen
-![Favorites](screenshots/favourites.png)
-![Favorites2](screenshots/favourites2.png)
-👤 Profile Screen
-![Profile](screenshots/profile.png)
-![Profile2](screenshots/profile2.png)
-⚙️ Settings Screen
-![Settings](screenshots/settings.png)
-🔔 Notifications
-![Notification](screenshots/notification.png)
-📴 Offline Mode
-![Offline](screenshots/offline.png)
-❌ Empty State UI
-![WrongFood](screenshots/wrongfood.png)
-📂 Project Structure
+- Splash Screen
+- Login & Signup Authentication
+- Modern Jetpack Compose UI
+- Bottom Navigation
+- Real-Time Recipe API Integration
+- Internet Recipe Images
+- Search Functionality
+- Recipe Detail Screen
+- Favorites Screen
+- Profile Screen
+- Settings Screen
+- Recently Viewed Recipes
+- Push Notification UI
+- Offline Internet Detection
+- Dark Mode Support
+- Responsive Layout
+
+## 🌐 API & Backend Features
+
+- Retrofit API Integration
+- JSON Parsing using Gson
+- Real Recipe Fetching
+- Dynamic Recipe Loading
+- Pull-to-Refresh Support
+- Error Handling UI
+- Empty State UI
+- Smooth Data Updates
+- Search + Category Filtering
+- Firebase Authentication
+- Persistent User Sessions
+
+## 🎨 UI/UX Features
+
+- Featured Recipe Banner
+- Category Filtering
+- Shimmer Loading Animation
+- Smooth Screen Transitions
+- Modern Material 3 Design
+- Interactive Favorite Button
+- Beautiful Card Layouts
+- Professional Typography & Spacing
+- Smooth Navigation Animations
+- Responsive Compose Layouts
+
+## ❤️ Advanced Features
+
+- Persistent Favorites using Room Database
+- Offline Favorite Storage
+- Real-Time Favorite Updates
+- Animated Navigation Transitions
+- Search + Category Combined Filtering
+- DataStore Preferences
+- Notification Support
+- Recently Viewed Recipe Tracking
+- Offline Internet Detection Screen
+
+# 🛠️ Technologies Used
+
+| Technology | Purpose |
+|---|---|
+| Kotlin | Programming Language |
+| Jetpack Compose | Modern Android UI |
+| Retrofit | API Integration |
+| Gson Converter | JSON Parsing |
+| Coil | Image Loading |
+| Room Database | Local Storage |
+| Firebase Authentication | User Authentication |
+| DataStore | Preferences Storage |
+| Material 3 | UI Components |
+| Coroutines | Asynchronous Programming |
+
+# 🌐 API Used
+
+## TheMealDB API
+
+https://www.themealdb.com/api.php
+
+### Used for:
+
+- Fetching recipes
+- Recipe images
+- Recipe categories
+- Recipe instructions
+- Search functionality
+
+# 📱 App Screenshots
+
+## 🚀 Splash Screen
+
+![Splash Screen](screenshots/splash.png)
+
+---
+
+## 🔐 Login Screen
+
+![Login Screen](screenshots/login.png)
+
+---
+
+## 📝 Signup Screen
+
+![Signup Screen](screenshots/signup.png)
+
+---
+
+## 🏠 Home Screen
+
+![Home Screen](screenshots/home.png)
+
+![Home Screen 2](screenshots/home2.png)
+
+---
+
+## 🍱 Online Recipes
+
+![Online Recipes](screenshots/onlinerecipes.png)
+
+---
+
+## 🧩 Category Filtering
+
+![Category Filtering](screenshots/categories.png)
+
+---
+
+## 🔍 Search Functionality
+
+![Search Functionality](screenshots/search.png)
+
+---
+
+## 📖 Recipe Detail Screen
+
+![Recipe Detail](screenshots/description.png)
+
+![Recipe Detail 2](screenshots/description2.png)
+
+---
+
+## ❤️ Favorites Screen
+
+![Favorites Screen](screenshots/favourites.png)
+
+![Favorites Screen 2](screenshots/favourites2.png)
+
+---
+
+## 🌙 Dark Mode
+
+![Dark Mode](screenshots/darkmode.png)
+
+---
+
+## 👤 Profile Screen
+
+![Profile Screen](screenshots/profile.png)
+
+![Profile Screen 2](screenshots/profile2.png)
+
+---
+
+## ⚙️ Settings Screen
+
+![Settings Screen](screenshots/settings.png)
+
+---
+
+## 🕘 Recently Viewed Recipes
+
+![Recently Viewed](screenshots/recent.png)
+
+---
+
+## 🔔 Notification UI
+
+![Notification UI](screenshots/notification.png)
+
+---
+
+## 📴 Offline Internet Detection
+
+![Offline Screen](screenshots/offline.png)
+
+---
+
+## ⚠️ Empty State UI
+
+![Empty State UI](screenshots/wrongfood.png)
+
+# 📂 Project Structure
+
+```bash
 com.example.recipenest
 │
 ├── api
+│   ├── RecipeApiService.kt
+│   ├── FavoriteRecipeDao.kt
+│   ├── RecipeDatabase.kt
+│   └── RetrofitInstance.kt
+│
+├── auth
+│   ├── LoginScreen.kt
+│   ├── SignupScreen.kt
+│   └── AuthViewModel.kt
+│
 ├── components
+│   ├── CategoryChip.kt
+│   ├── FeaturedBanner.kt
+│   ├── OnlineRecipeCard.kt
+│   ├── RecentRecipeCard.kt
+│   ├── ShimmerRecipeCard.kt
+│   ├── ThemeManager.kt
+│   └── SettingsManager.kt
+│
 ├── model
-├── navigation
+│   ├── OnlineRecipe.kt
+│   ├── FavoriteRecipeEntity.kt
+│   └── RecentRecipe.kt
+│
 ├── screens
-├── database
+│   ├── HomeScreen.kt
+│   ├── FavoriteScreen.kt
+│   ├── ProfileScreen.kt
+│   ├── SettingsScreen.kt
+│   └── RecipeDetailScreen.kt
+│
 ├── utils
+│   ├── NetworkUtils.kt
+│   ├── NotificationHelper.kt
+│   ├── RecentRecipeManager.kt
+│   └── SettingsDataStore.kt
+│
 └── MainActivity.kt
-🚀 Getting Started
-Clone the Repository
-git clone https://github.com/your-username/RecipeNest.git
-Open Project
-Open in Android Studio
-Sync Gradle
-Sync Project with Gradle Files
-Run the App
-Run on Emulator or Physical Device
-👨‍💻 Developer
-Aryan Goud
-
-MCA Student | Android Developer | Flutter Developer
-
-⭐ Support
-
-If you like this project, give it a ⭐ on GitHub!
+```

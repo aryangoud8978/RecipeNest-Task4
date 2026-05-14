@@ -1,8 +1,8 @@
-# 🍽️ RecipeNest – Modern Android Recipe App
+### 🍽️ RecipeNest – Modern Android Recipe App
 
-RecipeNest is a modern Android Recipe Application built using **Kotlin** and **Jetpack Compose** in Android Studio as part of the **ApexPlanet Android App Development Internship – Task 3**.
+RecipeNest is a professional Android Recipe Application built using Kotlin and Jetpack Compose in Android Studio as part of the ApexPlanet Android App Development Internship.
 
-The app provides a beautiful and smooth user experience with real-time recipe data, modern UI design, API integration, category filtering, persistent favorites, dark mode support, and professional animations.
+The app provides a beautiful modern UI, real-time recipe fetching, Firebase Authentication, Room Database persistence, offline handling, notifications, DataStore preferences, and production-level Android architecture.
 
 ---
 
@@ -19,12 +19,24 @@ The app provides a beautiful and smooth user experience with real-time recipe da
 - Recipe Detail Screen
 - Favorites Screen
 - Profile Screen
+- Settings Screen
 - Dark Mode Support
 - Responsive Layout
 
 ---
 
-## 🌐 API & Backend Features
+# 🔐 Authentication Features
+
+- Firebase Authentication
+- User Signup & Login
+- Persistent User Sessions
+- Logout Functionality
+- Authentication Error Handling
+- Loading Indicators
+
+---
+
+# 🌐 API & Backend Features
 
 - Retrofit API Integration
 - JSON Parsing using Gson
@@ -37,7 +49,54 @@ The app provides a beautiful and smooth user experience with real-time recipe da
 
 ---
 
-## 🎨 UI/UX Features
+# ❤️ Database Features
+
+- Room Database Integration
+- Persistent Favorites
+- Offline Favorite Storage
+- Real-Time Favorite Updates
+
+---
+
+# ⚙️ Settings & Preferences
+
+- Settings Screen
+- Notification Toggle
+- Auto Refresh Toggle
+- DataStore Preferences
+- Persistent Settings Storage
+
+---
+
+# 🌍 Offline & Connectivity Features
+
+- Internet Connectivity Detection
+- Offline UI Screen
+- Retry System
+- Better Network Error Handling
+
+---
+
+# 🔔 Notification Features
+
+- Local Push Notifications
+- Notification Permission Handling
+- Notification Channel Support
+- Recipe Reminder Notifications
+
+---
+
+# 🕒 User Experience Features
+
+- Recently Viewed Recipes
+- Horizontal Recent Recipe Cards
+- Real-Time Recipe Tracking
+- Smooth Navigation Animations
+- Search + Category Combined Filtering
+
+---
+
+# 🎨 UI/UX Features
 
 - Featured Recipe Banner
 - Category Filtering
@@ -50,26 +109,18 @@ The app provides a beautiful and smooth user experience with real-time recipe da
 
 ---
 
-## ❤️ Advanced Features
-
-- Persistent Favorites using Room Database
-- Offline Favorite Storage
-- Real-Time Favorite Updates
-- Animated Navigation Transitions
-- Search + Category Combined Filtering
-
----
-
 # 🛠️ Technologies Used
 
 | Technology | Purpose |
-|------------|---------|
+|------------|----------|
 | Kotlin | Programming Language |
 | Jetpack Compose | Modern Android UI |
 | Retrofit | API Integration |
 | Gson Converter | JSON Parsing |
 | Coil | Image Loading |
 | Room Database | Local Storage |
+| Firebase Authentication | User Authentication |
+| DataStore | Persistent Preferences |
 | Material 3 | UI Components |
 | Coroutines | Asynchronous Programming |
 
@@ -77,7 +128,7 @@ The app provides a beautiful and smooth user experience with real-time recipe da
 
 # 🌐 API Used
 
-### TheMealDB API
+## TheMealDB API
 
 https://www.themealdb.com/api.php
 
@@ -91,81 +142,145 @@ Used for:
 
 # 📱 App Screenshots
 
----
+## 🔐 Login Screen
 
-## 🏠 Home Screen
-
-![Home Screen](screenshots/home.png)
+![Login Screen](screenshots/login.png)
 
 ---
 
-## 🍱 Online Recipes
+## 📝 Signup Screen
 
-![Online Recipes](screenshots/onlinerecipes.png)
-
----
-
-## 🧩 Category Filtering
-
-![Category Filtering](screenshots/categories.png)
+![Signup Screen](screenshots/signup.png)
 
 ---
 
-## 🔍 Search Functionality
+## 🕒 Recently Viewed Recipes
 
-![Search Functionality](screenshots/search.png)
-
----
-
-## 📖 Recipe Detail Screen
-
-![Recipe Detail Screen](screenshots/description2.png)
+![Recently Viewed](screenshots/recent.png)
 
 ---
 
-## ❤️ Favorites Screen
+## ⚙️ Settings Screen
 
-![Favorites Screen](screenshots/favourites2.png)
-
----
-
-## 🌙 Dark Mode
-
-![Dark Mode](screenshots/darkmode.png)
+![Settings Screen](screenshots/settings.png)
 
 ---
 
-## ⚠️ Empty State UI
+## 👨‍🍳 Enhanced Profile Screen
 
-![Empty State](screenshots/wrongfood.png)
+![Profile Screen](screenshots/profile2.png)
+
+---
+
+## 🌍 Offline Detection Screen
+
+![Offline Screen](screenshots/offline.png)
+
+---
+
+## 🔔 Push Notifications
+
+![Notification](screenshots/notification.png)
 
 ---
 
 # 📂 Project Structure
 
-```text
+```bash
 com.example.recipenest
 │
 ├── api
 │   ├── RecipeApiService.kt
 │   ├── FavoriteRecipeDao.kt
-│   └── RecipeDatabase.kt
+│   ├── RecipeDatabase.kt
+│   └── RetrofitInstance.kt
+│
+├── auth
+│   ├── LoginScreen.kt
+│   ├── SignupScreen.kt
+│   └── AuthViewModel.kt
 │
 ├── components
 │   ├── CategoryChip.kt
 │   ├── FeaturedBanner.kt
 │   ├── OnlineRecipeCard.kt
+│   ├── RecentRecipeCard.kt
 │   ├── ShimmerRecipeCard.kt
-│   └── ThemeManager.kt
+│   ├── ThemeManager.kt
+│   └── SettingsManager.kt
 │
 ├── model
 │   ├── OnlineRecipe.kt
-│   └── FavoriteRecipeEntity.kt
+│   ├── FavoriteRecipeEntity.kt
+│   └── RecentRecipe.kt
 │
 ├── screens
 │   ├── HomeScreen.kt
 │   ├── FavoriteScreen.kt
 │   ├── ProfileScreen.kt
-│   └── OnlineRecipeDetailScreen.kt
+│   ├── SettingsScreen.kt
+│   └── RecipeDetailScreen.kt
 │
-└── navigation
+├── utils
+│   ├── NetworkUtils.kt
+│   ├── NotificationHelper.kt
+│   ├── RecentRecipeManager.kt
+│   └── SettingsDataStore.kt
+│
+├── viewmodel
+│   └── AuthViewModel.kt
+│
+└── MainActivity.kt
+```
+
+---
+
+# 🚀 Installation
+
+## 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/aryangoud8978/RecipeNest-Task4.git
+```
+
+---
+
+## 2️⃣ Open in Android Studio
+
+Open the project using Android Studio Hedgehog or newer.
+
+---
+
+## 3️⃣ Sync Gradle
+
+Allow Gradle Sync to complete successfully.
+
+---
+
+## 4️⃣ Add Firebase Configuration
+
+Download and place:
+
+```text
+google-services.json
+```
+
+inside:
+
+```text
+app/
+```
+
+---
+
+## 5️⃣ Run the Application
+
+Connect emulator or Android device and run the app.
+
+---
+
+# 👨‍💻 Developer
+
+## Aryan Goud
+
+Built with ❤️ using Kotlin & Jetpack Compose
